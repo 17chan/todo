@@ -17,12 +17,14 @@ const prompt = require('prompt-sync')();
 const todoList = [];
 const menus = ["タスクを追加する", "タスクを削除する", "閉じる"]
 
-while(true) {
-    switch(start()){
+
+while (true) {
+    switch (start()) {
         case "1":
-            add();
+            addTask();
             break;
         case "2":
+            deleteTask();
             break;
         case "3":
             return;
@@ -36,44 +38,82 @@ while(true) {
 
 
 function start() {
-    console.log("\n----todo list----\n");
-    if (todoList.length > 0) {
-        todoList.forEach(li => {
-            console.log("● " + li);
-        });
-    }
-    console.log("\nなにをしますか？\n");
-    for (i = 0, len = menus.length; i < len; i++){
-        console.log((i+1) + ": " + menus[i]);
+    console.log(" ") //改行
+    console.log("----todo list----");
+    console.log(" ") //改行
+    viewTask();
+    console.log(" ") //改行
+    console.log("なにをしますか？");
+    console.log(" ") //改行
+    for (i = 0, len = menus.length; i < len; i++) {
+        console.log((i + 1) + ": " + menus[i]);
     }
     return prompt();
 }
 
 
-
-
-function add() {
-    while(true) {
-        const task = prompt('タスクを追加してください');
-    
-        console.log(`${task}を追加しました`);
-    
-        todoList.push(task);
-    
-        todoList.forEach(li => {
-            console.log("● " + li);
-        });
-
-        const question = prompt("続けますか？ y/n")
-        if(question=="y") {
-        }else if (question == "n"){
-            break
-        }else {
-            console.log("ちゃんと入力してよ〜ん( ；∀；)");
+function viewTask() {
+    if (todoList.length > 0) {
+        for (i = 0; i < todoList.length; i++) {
+            console.log((i + 1) + ": " + todoList[i]);
         }
     }
+}
 
 
+function addTask() {
+    while (true) {
+        console.log(" ") //改行
+        console.log(" ") //改行
+        console.log(" ") //改行
+        const task = prompt('タスクを追加してください: ');
+        console.log(" ") //改行
+
+        console.log(`${task}を追加しました`);
+        console.log(" ") //改行
+
+        todoList.push(task);
+
+        viewTask()
+        console.log(" ") //改行
+
+        while (true) {
+            const question = prompt("続けますか？ y/n: ")
+            if (question == "y") {
+                break;
+            } else if (question == "n") {
+                return;
+            } else {
+                console.log("ちゃんと入力してよ〜ん( ；∀；)");
+            }
+
+        }
+    }
+}
+
+function deleteTask() {
+    while (true) {
+        viewTask();
+
+        const erase = prompt('タスクを削除します。タスク番号を入力してください');
+
+
+        console.log(erase + ": " + todoList[parseInt(erase) - 1] + "を削除しました");
+        todoList.splice(parseInt(erase) - 1, 1);
+
+
+        while (true) {
+            const question = prompt("続けますか？ y/n")
+            if (question == "y") {
+                break;
+            } else if (question == "n") {
+                return;
+            } else {
+                console.log("ちゃんと入力してよ〜ん( ；∀；)");
+            }
+
+        }
+    }
 }
 
 
